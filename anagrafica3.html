@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lavoro dell 09/10/25</title>
+    <style>
+        /*stile dell sito generale*/
+        body{ 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding-bottom: 50px; 
+        }
+        /* stile della classe cioe il padre di box e output  */
+        .container{
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .box{
+            border: 1px solid black;
+            width: 320px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .output{
+            min-width: 260px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+        input[type="text"], input[type="email"]{
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+            padding: 6px;
+        }
+        input[type="button"]{
+            margin-top: 8px;
+            padding: 6px 10px;
+        }
+
+        /* stile footer cioe il basso dell sito (di solito si usa per vedere chi ha creato il sito) */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9em;
+        }
+    </style>
+    <script>
+        function stampa(){
+            const nome = document.getElementById("demo").value;
+            const cognome = document.getElementById("demi").value;
+            const indirizzo = document.getElementById("demu").value;
+            const citta = document.getElementById("città").value;
+            const cap = document.getElementById("cap").value;
+
+            document.getElementById("1").innerText = nome;
+            document.getElementById("2").innerText = cognome;
+            document.getElementById("3").innerText = indirizzo;
+            document.getElementById("4").innerText = citta;
+            document.getElementById("5").innerText = cap;
+        }
+
+        function gestisci() {
+            const eta = parseInt(document.getElementById("numero").value);
+            if(eta >= 1901 && eta <= 1927) {
+                window.alert("sei della generazione dei grandi");
+            } else if(eta >= 1928 && eta <= 1945) {
+                window.alert("sei della generazione dei silenziosi");
+            } else if(eta >= 1946 && eta <= 1964) {
+                window.alert("sei della generazione dei baby boomers");
+            } else if(eta >= 1965 && eta <= 1980) {
+                window.alert("sei della generazione x");
+            } else if(eta >= 1981 && eta <= 1996) {
+                window.alert("sei della generazione y");
+            } else if(eta >= 1997 && eta <= 2012) {
+                window.alert("sei della generazione z");
+            } else if(eta >= 2013) {
+                window.alert("sei della generazione alpha");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <h3>scrivi il tuo nome</h3>
+            <input type="text" id="demo">
+
+            <h3>scrivi il tuo cognome</h3>
+            <input type="text" id="demi">
+
+            <h3>scrivi il tuo indirizzo</h3>
+            <input type="email" id="demu">
+
+            <h3>scrivi la tua città</h3>
+            <input type="text" id="città">
+
+            <h3>scrivi il tuo cap</h3>
+            <input type="text" id="cap">
+
+            <h3>scrivi il tuo anno di nascita</h3>
+            <input type="text" id="numero">
+
+            <input type="button" value="stampa dati" onclick="stampa()">
+            <input type="button" value="verifica generazione" onclick="gestisci()">
+        </div>
+
+        <div class="output">
+            <p id="1"></p>
+            <p id="2"></p>
+            <p id="3"></p>
+            <p id="4"></p>
+            <p id="5"></p>
+            <p id="6"></p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Realizzato da **Luca "Dragons" Stecchetti**
+    </footer>
+</body>
+</html>
