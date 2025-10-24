@@ -1,1 +1,244 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Indice dei lavori presenti nella repository." />
+  <title>Lavori — Home</title>
 
+  <style>
+    :root{
+      --accent: #943ddf; /* colore principale */
+      --accent-2: #c78bff;
+      --bg-1: #0b0020; /* sfondo scuro viola */
+      --bg-2: #240033;
+      --card: rgba(255,255,255,0.04); /* card leggera su sfondo scuro */
+      --text: #f6f2fb; /* testo principale chiaro */
+      --muted: #c9b6e9; /* testo secondario */
+      --radius: 12px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container{
+      max-width: 1000px;
+      margin: 32px auto;
+      padding: 24px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+    }
+
+    /* rimosso elemento logo: non viene più mostrato */
+
+    .brand .title {
+      display:block;
+    }
+    .brand strong{
+      font-size:1.15rem;
+      letter-spacing:0.2px;
+      color:var(--text);
+      display:block;
+    }
+    .brand small{
+      color:var(--muted);
+      display:block;
+      margin-top:2px;
+    }
+
+    nav a{
+      margin-left:16px;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:0.95rem;
+      transition: color .18s ease, transform .12s ease;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: var(--accent);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    main{
+      margin-top:22px;
+      display:block;
+    }
+
+    .card{
+      background: var(--card);
+      padding:20px;
+      border-radius:var(--radius);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+      border: 1px solid rgba(148,61,223,0.06);
+    }
+
+    h1{margin:0 0 8px 0;font-size:1.4rem;color:var(--text)}
+    p.lead{margin:0;color:var(--muted)}
+    footer{
+      margin-top:28px;
+      color:var(--muted);
+      font-size:0.9rem;
+      text-align:center;
+    }
+
+    hr.soft {
+      margin:18px 0;
+      border:0;
+      height:1px;
+      background: linear-gradient(90deg, rgba(148,61,223,0) 0%, rgba(148,61,223,0.14) 50%, rgba(148,61,223,0) 100%);
+    }
+
+    #projects-list{margin:8px 0 0 18px;color:var(--muted);padding-left:0;list-style:disc}
+    #projects-list li{margin:6px 0}
+    #projects-list a{
+      color:var(--accent);
+      text-decoration:none;
+      transition: color .12s ease, transform .08s ease;
+    }
+    #projects-list a:hover{
+      text-decoration:underline;
+      transform: translateX(2px);
+    }
+
+    .muted-small{ color:var(--muted); font-size:0.95rem; }
+
+    @media (max-width:880px){
+      .container{ padding:16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="#">
+        <div class="title">
+          <strong>Lavori</strong>
+          <small class="muted-small">Portfolio repository</small>
+        </div>
+      </a>
+
+      <nav aria-label="Principale">
+        <a href="#about">About</a>
+        <a href="#projects">Progetti</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card" id="hero" aria-labelledby="welcome-title">
+        <h1 id="welcome-title">Benvenuto</h1>
+        <p class="lead">Indice dei lavori e dei file presenti nella repository. Clicca sui link per aprire i file su GitHub.</p>
+
+        <hr class="soft" />
+
+        <h2 id="about" style="font-size:1.05rem;margin:0 0 8px 0;color:var(--text)">Informazioni</h2>
+        <ul style="margin:0 0 8px 18px;color:var(--muted)">
+          <li>Questa pagina elenca automaticamente i file e le cartelle nella root della repository.</li>
+          <li>I link aprono i file su GitHub nel ramo predefinito.</li>
+        </ul>
+
+        <p style="margin:12px 0 0 0;color:var(--muted)">Ora: <span id="now">--:--:--</span></p>
+      </section>
+    </main>
+
+    <section class="card" id="projects" style="margin-top:18px">
+      <h2 style="margin:0 0 8px 0;color:var(--text)">Progetti nella repository</h2>
+      <p style="margin:0 0 8px 0;color:var(--muted)">Elenco dei file e delle cartelle presenti nella root della repository <strong>dragons-rame/lavori</strong>.</p>
+      <ul id="projects-list" aria-live="polite">
+        <li style="color:var(--muted)">Caricamento...</li>
+      </ul>
+    </section>
+
+    <footer class="card" role="contentinfo" style="margin-top:18px">
+      <small>© <span id="year"></span> Dragons Rame</small>
+    </footer>
+  </div>
+
+  <script>
+    // orologio e anno
+    function updateClock(){
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2,'0');
+      const mm = String(now.getMinutes()).padStart(2,'0');
+      const ss = String(now.getSeconds()).padStart(2,'0');
+      const el = document.getElementById('now');
+      if (el) el.textContent = `${hh}:${mm}:${ss}`;
+    }
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // popola lista file della repo
+    (async function loadProjects(){
+      const owner = 'dragons-rame';
+      const repo = 'lavori';
+      const ul = document.getElementById('projects-list');
+      if (!ul) return;
+      ul.innerHTML = '<li style="color:var(--muted)">Caricamento...</li>';
+
+      try {
+        const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+        if (!repoRes.ok) throw new Error('Impossibile ottenere le informazioni del repository.');
+        const repoData = await repoRes.json();
+        const branch = repoData.default_branch || 'main';
+
+        const contentsRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents?ref=${branch}`);
+        if (!contentsRes.ok) throw new Error('Impossibile ottenere il contenuto della repository.');
+        const items = await contentsRes.json();
+
+        ul.innerHTML = '';
+
+        const allowedExt = ['.html','.htm','.md','.pdf','.png','.jpg','.jpeg','.gif','.svg','.zip'];
+        items.sort((a,b) => (a.type === b.type) ? a.name.localeCompare(b.name) : (a.type === 'dir' ? -1 : 1));
+        items.forEach(item => {
+          const isDir = item.type === 'dir';
+          const extMatch = item.name.match(/(\.[^\.]+)$/);
+          const ext = extMatch ? extMatch[1].toLowerCase() : '';
+          if (!isDir && ext && !allowedExt.includes(ext)) return;
+
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          const href = isDir
+            ? `https://github.com/${owner}/${repo}/tree/${branch}/${item.path}`
+            : `https://github.com/${owner}/${repo}/blob/${branch}/${item.path}`;
+          a.href = href;
+          a.textContent = item.name + (isDir ? ' (cartella)' : '');
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+
+        if (!ul.children.length) {
+          ul.innerHTML = '<li style="color:var(--muted)">Nessun file o cartella mostrabile nella root della repository.</li>';
+        }
+      } catch (err) {
+        ul.innerHTML = `<li style="color:var(--muted)">Errore: ${err.message}</li>`;
+        console.error(err);
+      }
+    })();
+  </script>
+</body>
+</html>
