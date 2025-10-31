@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+
+    </head>
+    <body>
+        <input type="text" id="casella1">
+        <input type="text" id="casella2">
+        <input type="text" id="casella3">
+        <input type="text" id="casella4">
+        <div  id="casella5"></div>
+        <input type="button" value="cliccami" id="bottone" onclick="converti()">
+        
+
+
+        <script>
+            function converti() {
+                    let valore1=Number (document.getElementById("casella1").value);
+                    let valore2=Number (document.getElementById("casella2").value);
+                    let valore3=Number (document.getElementById("casella3").value);
+                    let valore4=Number (document.getElementById("casella4").value);
+                    let valore5=document.getElementById("casella5");
+                    let output="";
+                    output+=decktobin(valore1)+".";
+                    output+=decktobin(valore2)+ ".";
+                    output+=decktobin(valore3) +".";
+                    output+=decktobin(valore4);
+                     valore5.textContent=output;
+                    
+
+                    
+            }
+            function decktobin(n) {
+                let res="";
+                let m;
+                while (n!=0) {
+                    m= n%2;
+                    n=Math.floor(n/2);
+                    res=m + res;
+                    
+
+                } 
+                return res;
+
+            }
+        </script>
+    </body>
+</html>
