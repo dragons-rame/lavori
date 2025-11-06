@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Generatore di Subnet Mask</title>
+  </head>
+  <body>
+    <h3>Generatore di Subnet Mask (da Prefix Number)</h3>
+
+    <label for="prefixInput">Inserisci prefix number (0 - 32): </label>
+    <input type="text" id="prefixInput">
+    <input type="button" value="Genera Subnet Mask" onclick="generaSubnetMask()">
+
+    <div id="maskOutput"></div>
+
+    <script>
+      function generaSubnetMask() {
+        let prefixNumber = Number(document.getElementById("prefixInput").value);
+        let maskOutput = document.getElementById("maskOutput");
+
+        if (isNaN(prefixNumber) || prefixNumber < 0 || prefixNumber > 32) {
+          maskOutput.textContent = "Errore: inserire un numero tra 0 e 32.";
+          return;
+        }
+
+        let fullOctets = Math.floor(prefixNumber / 8);
+        let remainingBits = prefixNumber % 8;
+        let binaryOctets = [];
+
+        for (let i = 0; i < fullOctets; i++) {
+          binaryOctets.push("11111111");
+        }
+
+        if (remainingBits > 0) {
+          let partialOctet = "";
+          for (let i = 0; i < 8; i++) {
+            partialOctet += i < remainingBits ? "1" : "0";
+          }
+          binaryOctets.push(partialOctet);
+        }
+
+        while (binaryOctets.length < 4) {
+          binaryOctets.push("00000000");
+        }
+
+        let subnetMaskBinary = binaryOctets.join(".");
+        maskOutput.textContent = "Subnet mask in binario: " + subnetMaskBinary;
+      }
+    </script>
+  </body>
+</html>
