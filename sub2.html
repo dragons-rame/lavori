@@ -4,79 +4,125 @@
     <meta charset="UTF-8">
     <title>Generatore di Subnet Mask</title>
     <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        color: #f5f5f5;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        height: 100vh;
-        margin: 0;
-        padding-top: 50px;
-      }
+      /* 🌆 Sfondo e font */
+body {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #1a2980, #26d0ce);
+  color: #f5f5f5;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 60px;
+}
 
-      h3 {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        text-align: center;
-      }
+/* 🧭 Titolo */
+h3 {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin-bottom: 30px;
+}
 
-      label {
-        font-weight: bold;
-        margin-right: 10px;
-      }
+/* 🖋️ Label */
+label {
+  font-weight: 600;
+  margin-right: 10px;
+  color: #e0f7fa;
+}
 
-      input[type="text"] {
-        padding: 8px 10px;
-        border-radius: 5px;
-        border: none;
-        width: 150px;
-        margin-right: 10px;
-        text-align: center;
-      }
+/* 📥 Input */
+input[type="text"] {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #00bcd4;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: 160px;
+  text-align: center;
+  transition: 0.3s;
+  outline: none;
+}
 
-      input[type="button"] {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: 0.3s;
-        margin: 5px;
-      }
+input[type="text"]:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 10px #00e5ff;
+}
 
-      input[type="button"]:hover {
-        background-color: #45a049;
-        transform: scale(1.05);
-      }
+/* 🟩 Pulsanti */
+input[type="button"] {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 8px 5px;
+}
 
-      #maskOutput, #maskOutput2, p {
-        margin-top: 20px;
-        font-size: 18px;
-        background: rgba(0, 0, 0, 0.2);
-        padding: 10px 15px;
-        border-radius: 6px;
-      }
+input[type="button"]:hover {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
 
-      #maskOutput {
-        color: #ffeb3b;
-      }
+/* 📊 Output */
+#maskOutput, #maskOutput2, p {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 12px 18px;
+  border-radius: 8px;
+  width: fit-content;
+  color: #ffeb3b;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 
-      p {
-        color: #ff9800;
-      }
+/* 🔢 Numero host */
+p {
+  color: #ffc107;
+}
 
-      footer {
-        position: absolute;
-        bottom: 15px;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.7);
-      }
+/* 🦶 Footer (se aggiunto in futuro) */
+footer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+/* 📱 Responsività */
+@media (max-width: 500px) {
+  body {
+    padding-top: 30px;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+  }
+
+  input[type="text"] {
+    width: 120px;
+  }
+
+  input[type="button"] {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+    
     </style>
   </head>
   <body>
@@ -89,7 +135,7 @@
 
     <div id="maskOutput"></div>
     <p>2<sup id="sup"></sup></p>
-    <div id="maskOutput2"></div>
+  
 
     <footer>© 2025 - creato da stecchetti luca "dragons"</footer>
 
