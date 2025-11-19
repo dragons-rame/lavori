@@ -49,8 +49,6 @@
       color:inherit;
     }
 
-    /* rimosso elemento logo: non viene più mostrato */
-
     .brand .title {
       display:block;
     }
@@ -148,14 +146,14 @@
     <main>
       <section class="card" id="hero" aria-labelledby="welcome-title">
         <h1 id="welcome-title">Benvenuto</h1>
-        <p class="lead">Indice dei lavori e dei file presenti nella repository. Clicca sui link per aprire i file su GitHub.</p>
+        <p class="lead">Indice dei lavori e dei file presenti nella repository. Clicca sui link per aprire le pagine web.</p>
 
         <hr class="soft" />
 
         <h2 id="about" style="font-size:1.05rem;margin:0 0 8px 0;color:var(--text)">Informazioni</h2>
         <ul style="margin:0 0 8px 18px;color:var(--muted)">
           <li>Questa pagina elenca automaticamente i file e le cartelle nella root della repository.</li>
-          <li>I link aprono i file su GitHub nel ramo predefinito.</li>
+          <li>I link aprono direttamente la pagina web renderizzata (non il codice sorgente).</li>
         </ul>
 
         <p style="margin:12px 0 0 0;color:var(--muted)">Ora: <span id="now">--:--:--</span></p>
@@ -164,14 +162,14 @@
 
     <section class="card" id="projects" style="margin-top:18px">
       <h2 style="margin:0 0 8px 0;color:var(--text)">Progetti nella repository</h2>
-      <p style="margin:0 0 8px 0;color:var(--muted)">Elenco dei file e delle cartelle presenti nella root della repository <strong>dragons-rame/lavori</strong>.</p>
+      <p style="margin:0 0 8px 0;color:var(--muted)">Elenco dei file visualizzabili presenti in <strong>dragons-rame/lavori</strong>.</p>
       <ul id="projects-list" aria-live="polite">
         <li style="color:var(--muted)">Caricamento...</li>
       </ul>
     </section>
 
     <footer class="card" role="contentinfo" style="margin-top:18px">
-      <small>© <span id="year"></span> Dragons Rame("luca stecchetti")</small>
+      <small>© <span id="year"></span> Dragons Rame ("luca stecchetti")</small>
     </footer>
   </div>
 
@@ -210,36 +208,50 @@
 
         ul.innerHTML = '';
 
+        // Escludiamo index.html dalla lista per non linkare se stesso
         const allowedExt = ['.html','.htm','.md','.pdf','.png','.jpg','.jpeg','.gif','.svg','.zip'];
+        
         items.sort((a,b) => (a.type === b.type) ? a.name.localeCompare(b.name) : (a.type === 'dir' ? -1 : 1));
+        
         items.forEach(item => {
+          // Se il file è proprio questo index.html, lo saltiamo per pulizia
+          if (item.name.toLowerCase() === 'index.html') return;
+
           const isDir = item.type === 'dir';
           const extMatch = item.name.match(/(\.[^\.]+)$/);
           const ext = extMatch ? extMatch[1].toLowerCase() : '';
+          
+          // Filtriamo i file non consentiti
           if (!isDir && ext && !allowedExt.includes(ext)) return;
 
           const li = document.createElement('li');
           const a = document.createElement('a');
-          const href = isDir
-            ? `https://github.com/${owner}/${repo}/tree/${branch}/${item.path}`
-            : `https://github.com/${owner}/${repo}/blob/${branch}/${item.path}`;
+          
+          // MODIFICA IMPORTANTE:
+          // Invece di costruire il link di GitHub (github.com/...), usiamo il path relativo.
+          // Essendo su GitHub Pages, questo aprirà la pagina web renderizzata.
+          const href = item.path; 
+
           a.href = href;
           a.textContent = item.name + (isDir ? ' (cartella)' : '');
-          a.target = '_blank';
+          // Rimuoviamo target blank se preferisci aprire nella stessa scheda, 
+          // oppure lasciamo così per aprire in nuova scheda.
+          a.target = '_blank'; 
           a.rel = 'noopener noreferrer';
+          
           li.appendChild(a);
           ul.appendChild(li);
         });
 
         if (!ul.children.length) {
-          ul.innerHTML = '<li style="color:var(--muted)">Nessun file o cartella mostrabile nella root della repository.</li>';
+          ul.innerHTML = '<li style="color:var(--muted)">Nessun file visualizzabile trovato.</li>';
         }
       } catch (err) {
         ul.innerHTML = `<li style="color:var(--muted)">Errore: ${err.message}</li>`;
         console.error(err);
       }
     })();
-    //grazie per aver letto il codice e cmq questo codice è stato fatto da luca stecchetti e la maggior parte dall team di uploop 
+    // grazie per aver letto il codice e cmq questo codice è stato fatto da luca stecchetti e la maggior parte dal team di uploop 
   </script>
 </body>
 </html>
