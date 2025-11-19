@@ -152,8 +152,8 @@
 
         <h2 id="about" style="font-size:1.05rem;margin:0 0 8px 0;color:var(--text)">Informazioni</h2>
         <ul style="margin:0 0 8px 18px;color:var(--muted)">
-          <li>Questa pagina elenca automaticamente i file e le cartelle nella root della repository.</li>
-          <li>I link aprono direttamente la pagina web renderizzata (non il codice sorgente).</li>
+          <li>Questa pagina elenca automaticamente i file pubblici nella root della repository.</li>
+          <li>I link aprono direttamente l'anteprima web (GitHub Pages).</li>
         </ul>
 
         <p style="margin:12px 0 0 0;color:var(--muted)">Ora: <span id="now">--:--:--</span></p>
@@ -162,7 +162,7 @@
 
     <section class="card" id="projects" style="margin-top:18px">
       <h2 style="margin:0 0 8px 0;color:var(--text)">Progetti nella repository</h2>
-      <p style="margin:0 0 8px 0;color:var(--muted)">Elenco dei file visualizzabili presenti in <strong>dragons-rame/lavori</strong>.</p>
+      <p style="margin:0 0 8px 0;color:var(--muted)">Elenco dei file visualizzabili in <strong>dragons-rame.github.io/lavori/</strong>.</p>
       <ul id="projects-list" aria-live="polite">
         <li style="color:var(--muted)">Caricamento...</li>
       </ul>
@@ -208,34 +208,32 @@
 
         ul.innerHTML = '';
 
-        // Escludiamo index.html dalla lista per non linkare se stesso
-        const allowedExt = ['.html','.htm','.md','.pdf','.png','.jpg','.jpeg','.gif','.svg','.zip'];
+        // Estensioni che vogliamo mostrare come link cliccabili
+        const allowedExt = ['.html','.htm','.pdf','.png','.jpg','.jpeg','.svg'];
         
         items.sort((a,b) => (a.type === b.type) ? a.name.localeCompare(b.name) : (a.type === 'dir' ? -1 : 1));
         
         items.forEach(item => {
-          // Se il file è proprio questo index.html, lo saltiamo per pulizia
+          // Saltiamo l'index stesso per evitare loop
           if (item.name.toLowerCase() === 'index.html') return;
 
           const isDir = item.type === 'dir';
           const extMatch = item.name.match(/(\.[^\.]+)$/);
           const ext = extMatch ? extMatch[1].toLowerCase() : '';
           
-          // Filtriamo i file non consentiti
+          // Se non è una cartella e non ha estensione valida, saltiamo (es. .gitignore, README.md se non vuoi vederli renderizzati)
           if (!isDir && ext && !allowedExt.includes(ext)) return;
 
           const li = document.createElement('li');
           const a = document.createElement('a');
           
-          // MODIFICA IMPORTANTE:
-          // Invece di costruire il link di GitHub (github.com/...), usiamo il path relativo.
-          // Essendo su GitHub Pages, questo aprirà la pagina web renderizzata.
-          const href = item.path; 
+          // *** PUNTO CRUCIALE: Costruzione del link per GitHub Pages ***
+          // Usiamo il percorso assoluto del sito web
+          const pagesBase = `https://${owner}.github.io/${repo}/`;
+          const href = pagesBase + item.path;
 
           a.href = href;
           a.textContent = item.name + (isDir ? ' (cartella)' : '');
-          // Rimuoviamo target blank se preferisci aprire nella stessa scheda, 
-          // oppure lasciamo così per aprire in nuova scheda.
           a.target = '_blank'; 
           a.rel = 'noopener noreferrer';
           
