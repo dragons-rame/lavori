@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Esercizio Anagrafica Validata</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px;
+            margin: 0;
+            color: #333;
+        }
+
+        .contenitore {
+            background: #ffffff;
+            padding: 25px;
+            width: 400px;
+            margin: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .contenitore:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            text-align: center;
+            color: #5a4fcf;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin-bottom: 12px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102,126,234,0.5);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .messaggio-errore {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f5f5ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenitore">
+        <h2>Inserisci Dati</h2>
+        
+        <div id="erroreGenerico" class="messaggio-errore">Per favore, controlla i campi inseriti.</div>
+
+        <input type="text" id="campoNome" placeholder="Nome (solo lettere)">
+        <input type="text" id="campoCognome" placeholder="Cognome (solo lettere)">
+        <input type="text" id="campoEmail" placeholder="Email (es. nome@dominio.it)">
+        <input type="text" id="campoCAP" placeholder="CAP (5 numeri)">
+        <input type="text" id="campoCitta" placeholder="Città">
+
+        <button onclick="salvaDati()">Invia Dati</button>
+    </div>
+
+    <h2>Tabella Risultati</h2>
+    <table id="tabellaDati">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Email</th>
+                <th>CAP</th>
+                <th>Città</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        var elencoDati = [];
+
+        function salvaDati() {
+            var nome = document.getElementById("campoNome").value;
+            var cognome = document.getElementById("campoCognome").value;
+            var email = document.getElementById("campoEmail").value;
+            var cap = document.getElementById("campoCAP").value;
+            var citta = document.getElementById("campoCitta").value;
+            var boxErrore = document.getElementById("erroreGenerico");
+
+            var regexLettere = /^[a-zA-Z\sàèìòùÀÈÌÒÙ]+$/;
+            var regexCAP = /^[0-9]{5}$/;
+            var regexEmail = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,6}$/;
+
+            var errore = "";
+
+            if (!regexLettere.test(nome)) {
+                errore += "Nome non valido. ";
+            }
+            if (!regexLettere.test(cognome)) {
+                errore += "Cognome non valido. ";
+            }
+            if (!regexEmail.test(email)) {
+                errore += "Email non valida. ";
+            }
+            if (!regexCAP.test(cap)) {
+                errore += "CAP deve contenere 5 numeri. ";
+            }
+            if (citta == "") {
+                errore += "Inserire la città. ";
+            }
+
+            if (errore !== "") {
+                boxErrore.innerHTML = errore;
+                boxErrore.style.display = "block";
+                return;
+            } else {
+                boxErrore.style.display = "none";
+            }
+
+            var nuovoOggetto = {
+                n: nome,
+                c: cognome,
+                e: email,
+                cp: cap,
+                cit: citta
+            };
+
+            elencoDati.push(nuovoOggetto);
+
+            document.getElementById("campoNome").value = "";
+            document.getElementById("campoCognome").value = "";
+            document.getElementById("campoEmail").value = "";
+            document.getElementById("campoCAP").value = "";
+            document.getElementById("campoCitta").value = "";
+
+            mostraTabella();
+        }
+
+        function mostraTabella() {
+            var corpoTabella = document.getElementById("tabellaDati").getElementsByTagName('tbody')[0];
+            corpoTabella.innerHTML = "";
+
+            for (var i = 0; i < elencoDati.length; i++) {
+                var riga = corpoTabella.insertRow();
+                
+                riga.insertCell(0).innerHTML = elencoDati[i].n;
+                riga.insertCell(1).innerHTML = elencoDati[i].c;
+                riga.insertCell(2).innerHTML = elencoDati[i].e;
+                riga.insertCell(3).innerHTML = elencoDati[i].cp;
+                riga.insertCell(4).innerHTML = elencoDati[i].cit;
+            }
+        }
+    </script>
+
+</body>
+</html>
