@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Esercizio Array di Oggetti</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px;
+            margin: 0;
+            color: #333;
+        }
+
+        .contenitore {
+            background-color: white;
+            padding: 25px;
+            width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        input {
+            margin-bottom: 12px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 5px rgba(102,126,234,0.5);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f5f7ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenitore">
+        <h2>Inserisci Dati</h2>
+        
+        <input type="text" id="campoNome" placeholder="Nome">
+        <input type="text" id="campoCognome" placeholder="Cognome">
+        <input type="text" id="campoEmail" placeholder="Email">
+        <input type="text" id="campoCitta" placeholder="Città">
+
+        <button onclick="salvaDati()">Invia Dati</button>
+    </div>
+
+    <h2>Tabella Risultati</h2>
+    <table id="tabellaDati">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Email</th>
+                <th>Città</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        var elencoDati = [];
+
+        function salvaDati() {
+            var nome = document.getElementById("campoNome").value;
+            var cognome = document.getElementById("campoCognome").value;
+            var email = document.getElementById("campoEmail").value;
+            var citta = document.getElementById("campoCitta").value;
+
+            if (nome == "" || cognome == "") {
+                alert("Riempi almeno Nome e Cognome!");
+                return;
+            }
+
+            var nuovoOggetto = {
+                n: nome,
+                c: cognome,
+                e: email,
+                cit: citta
+            };
+
+            elencoDati.push(nuovoOggetto);
+
+            document.getElementById("campoNome").value = "";
+            document.getElementById("campoCognome").value = "";
+            document.getElementById("campoEmail").value = "";
+            document.getElementById("campoCitta").value = "";
+
+            mostraTabella();
+        }
+
+        function mostraTabella() {
+            var corpoTabella = document.getElementById("tabellaDati").getElementsByTagName('tbody')[0];
+            
+            corpoTabella.innerHTML = "";
+
+            for (var i = 0; i < elencoDati.length; i++) {
+                var riga = corpoTabella.insertRow();
+                
+                var cella1 = riga.insertCell(0);
+                var cella2 = riga.insertCell(1);
+                var cella3 = riga.insertCell(2);
+                var cella4 = riga.insertCell(3);
+
+                cella1.innerHTML = elencoDati[i].n;
+                cella2.innerHTML = elencoDati[i].c;
+                cella3.innerHTML = elencoDati[i].e;
+                cella4.innerHTML = elencoDati[i].cit;
+            }
+        }
+    </script>
+
+</body>
+</html>
