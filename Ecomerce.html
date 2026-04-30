@@ -1,9 +1,179 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    
-  </head>
-  <body>
-    
-  </body>
-  
+<head>
+<meta charset="UTF-8">
+<title>Mini E-commerce CSV</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 20px;
+}
+
+#products, #cart {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+}
+
+img {
+  width: 100%;
+}
+
+button {
+  margin-top: 5px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Mini Shop</h1>
+
+<h3>Carica file CSV</h3>
+<input type="file" id="csvFile">
+<button onclick="loadFile()">Carica</button>
+
+<hr>
+
+<h2>Prodotti</h2>
+<div id="products"></div>
+
+<hr>
+
+<h2>Dettaglio</h2>
+<div id="detail"></div>
+
+<hr>
+
+<h2>Carrello</h2>
+<div id="cart"></div>
+<button onclick="makePDF()">Stampa PDF</button>
+
+<!-- LIBRERIA PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+// variabili globali
+var products = [];
+var cart = [];
+
+// CARICA FILE
+function loadFile() {
+  var fileInput = document.getElementById("csvFile");
+  var file = fileInput.files[0];
+
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    var text = e.target.result;
+    parseCSV(text);
+  };
+
+  reader.readAsText(file);
+}
+
+// PARSE CSV
+function parseCSV(text) {
+  var rows = text.split("\n");
+  var headers = rows[0].split(",");
+
+  products = [];
+
+  for (var i = 1; i < rows.length; i++) {
+    if (rows[i].trim() === "") continue;
+
+    var cols = rows[i].split(",");
+    var obj = {};
+
+    for (var j = 0; j < headers.length; j++) {
+      obj[headers[j].trim()] = cols[j];
+    }
+
+    products.push(obj);
+  }
+
+  showProducts();
+}
+
+// MOSTRA PRODOTTI
+function showProducts() {
+  var div = document.getElementById("products");
+  div.innerHTML = "";
+
+  for (var i = 0; i < products.length; i++) {
+    var p = products[i];
+
+    div.innerHTML +=
+      "<div class='card'>" +
+      "<img src='" + p.immagine + "'>" +
+      "<h3>" + p.marca + " " + p.modello + "</h3>" +
+      "<p>" + p.prezzo + " €</p>" +
+      "<button onclick='showDetail(" + i + ")'>Dettagli</button>" +
+      "</div>";
+  }
+}
+
+// DETTAGLIO
+function showDetail(i) {
+  var p = products[i];
+
+  var div = document.getElementById("detail");
+
+  div.innerHTML =
+    "<h3>" + p.marca + " " + p.modello + "</h3>" +
+    "<img src='" + p.immagine + "'>" +
+    "<p>" + p.descrizione + "</p>" +
+    "<p><b>" + p.prezzo + " €</b></p>" +
+    "<button onclick='addToCart(" + i + ")'>Aggiungi al carrello</button>";
+}
+
+// AGGIUNGI AL CARRELLO
+function addToCart(i) {
+  cart.push(products[i]);
+  showCart();
+}
+
+// MOSTRA CARRELLO
+function showCart() {
+  var div = document.getElementById("cart");
+  div.innerHTML = "";
+
+  for (var i = 0; i < cart.length; i++) {
+    var p = cart[i];
+
+    div.innerHTML +=
+      "<div class='card'>" +
+      "<p>" + p.marca + " " + p.modello + "</p>" +
+      "<p>" + p.prezzo + " €</p>" +
+      "</div>";
+  }
+}
+
+// CREA PDF
+function makePDF() {
+  var jsPDFLib = window.jspdf;
+  var doc = new jsPDFLib.jsPDF();
+
+  var y = 10;
+
+  for (var i = 0; i < cart.length; i++) {
+    var p = cart[i];
+
+    doc.text(p.marca + " " + p.modello + " - " + p.prezzo + "€", 10, y);
+    y = y + 10;
+  }
+
+  doc.save("carrello.pdf");
+}
+</script>
+
+</body>
 </html>
