@@ -214,9 +214,16 @@
           // "./nomefile" dice al browser di restare sul sito renderizzato.
           // Non usiamo "github.com" e non usiamo percorsi assoluti.
           
-          a.href = "./" + item.path; 
-          
-          a.textContent = item.name + (isDir ? ' (cartella)' : '');
+          // Per le cartelle, punta direttamente al file principale interno
+          if (isDir) {
+            const entryMap = { 'Ecommerce': 'home.html' };
+            const entry = entryMap[item.name] || 'index.html';
+            a.href = './' + item.path + '/' + entry;
+          } else {
+            a.href = './' + item.path;
+          }
+
+          a.textContent = item.name + (isDir ? ' →' : '');
           
           // Apriamo nella stessa scheda o nuova scheda? 
           // '_blank' apre una nuova scheda. Rimuovilo se vuoi aprire nella stessa.
