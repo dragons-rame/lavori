@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title> dettagli prodotto </title>
+        <link rel="stylesheet" href="paginaprodotto.css">
+    </head>
+    <body>
+        <header id="header">
+            <div id="divtitolo">
+                <h1 id="titolo">Capital Of Gaming</h1>
+            </div>
+            <div class="spostamento">
+                <a href="home.html">Home</a>
+                <a href="registrazione.html">Logout</a>
+                <a href="carrello.html">
+                    Carrello
+                    <span id="numerocarrello"></span>
+                </a>
+                <a href="cronologia.html">Cronologia ordini</a>
+            </div>
+        </header>
+        
+        <div id="dettagli"> </div>
+        
+        <script>
+            window.onload = aggiornanavbar;
+
+            function aggiornanavbar(){
+                let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+                let codicecarrello = accountattuale.email + accountattuale.password;
+
+                let carrello = JSON.parse(localStorage.getItem(codicecarrello)) || [];
+
+                let numero = document.getElementById("numerocarrello");
+
+                if(carrello.length > 0){
+                    numero.textContent = carrello.length;
+                    numero.style.display = "inline-block";
+                }
+                else{
+                    numero.style.display = "none";
+                }
+
+                numero.classList.remove("animazione-carrello");
+
+                void numero.offsetWidth;
+
+                numero.classList.add("animazione-carrello");
+            }
+
+            let dati = JSON.parse(localStorage.getItem("info"));
+            let button = document.createElement("button");
+            let immagine = document.createElement("img");
+            immagine.src = dati[3];
+
+            document.getElementById("dettagli").appendChild(immagine);
+
+            for(let i = 0; i < 5; i++){
+            
+                let p = document.createElement("p");
+                
+                if(i != 3){
+                    p.textContent = dati[i];
+                    document.getElementById("dettagli").appendChild(p);
+                }
+            }
+            
+            button.addEventListener("click", () => aggiungi());
+            button.id = "aggiungi";
+            button.textContent = "Aggiunti al carrello";
+            document.getElementById("dettagli").appendChild(button);
+
+
+            function aggiungi (){
+                let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+                let codicecarrello = accountattuale.email + accountattuale.password;
+                let carrello = JSON.parse(localStorage.getItem(codicecarrello)) || [];
+                carrello.push(dati);
+                localStorage.setItem(codicecarrello, JSON.stringify(carrello));
+
+                aggiornanavbar();
+            }
+
+        </script>
+    </body>
+</html>

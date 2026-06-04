@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <title>Home page</title>
+  </head>
+  <link rel="stylesheet" href="home.css" />
+  <body>
+    <header id="header">
+      <div id="divtitolo">
+        <h1 id="titolo">Capital Of Gaming</h1>
+      </div>
+      <div class="spostamento">
+        <a href="home.html">Home</a>
+        <a href="registrazione.html">Logout</a>
+        <a href="carrello.html">
+          Carrello
+          <span id="numerocarrello" style="display: none;"></span>
+        </a>
+        <a href="cronologia.html">Cronologia ordini</a>
+      </div>
+    </header>
+
+    <div id="prodotti"></div>
+    <div id="footer">
+      <p style="margin-top: 5px">assistenza</p>
+      <p style="margin-bottom: 5px">331 118 9887</p>
+      <p>recapiti</p>
+      <p style="margin-bottom: 5px">331 118 9887</p>
+      <p>feedback</p>
+      <p style="margin-bottom: 5px">331 118 9887</p>
+      <p>email</p>
+      <p style="margin-bottom: 5px">CapitalOfGaming@gmail.com</p>
+    </div>
+    <script>
+
+      let dati;
+
+      function cancelladati(){
+        localStorage.setItem("accountattuale", null);
+      }
+
+      function paginaprodotto(indice){
+        localStorage.setItem("info", JSON.stringify(dati[indice]));
+        location.href = "paginaprodotto.html";
+      }
+
+      function aggiornanavbar(){
+        let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+        let codicecarrello = accountattuale.email + accountattuale.password;
+
+        let carrello = JSON.parse(localStorage.getItem(codicecarrello)) || [];
+
+        let numero = document.getElementById("numerocarrello");
+
+        if(carrello.length > 0){
+          numero.textContent = carrello.length;
+          numero.style.display = "inline-block";
+
+          numero.classList.remove("animazione-carrello");
+
+        void numero.offsetWidth;
+
+        numero.classList.add("animazione-carrello");
+        }
+        else{
+          numero.style.display = "none";
+        }        
+      }
+
+      async function leggiCSV() {
+        const response = await fetch("https://raw.githubusercontent.com/HermannRienzner/esercizi_tps/main/Ecommerce/prodotti.csv");
+
+        const testo = await response.text();
+
+        const matrice = testo.trim().split(/\r?\n/).map(riga => riga.split(","));
+        
+        return matrice;
+      }
+
+      window.onload = async function(){
+
+        dati = await leggiCSV();
+
+        for(let i = 1; i < dati.length; i++){
+          let div = document.createElement("div");  
+          div.addEventListener("click", () => paginaprodotto(i));
+
+          for(let j = 0; j < 5; j++){
+            
+            let p = document.createElement("p");
+            let img = document.createElement("img");
+
+            if(j == 0){
+              img.src = dati[i][3];
+              div.appendChild(img);
+            }
+            
+            if(j == 0 || j == 1 || j == 4){
+              p.textContent = dati[i][j];
+              div.appendChild(p);
+            }
+          }
+
+          document.getElementById("prodotti").appendChild(div);
+        }
+        aggiornanavbar();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>
+      Cronologia ordini
+    </title>
+  </head>
+  <link rel="stylesheet" href="carrello.css"/>
+  <body>
+    <header id="header">
+      <div id="divtitolo">
+        <h1 id="titolo">Capital Of Gaming</h1>
+      </div>
+      <div class="spostamento">
+        <a href="home.html">Home</a>
+        <a href="registrazione.html">Logout</a>
+        <a href="carrello.html">
+          Carrello
+          <span id="numerocarrello"></span>
+        </a>
+        <a href="cronologia.html">Cronologia ordini</a>
+      </div>
+    </header>
+    <table id="outputcarrello">
+
+    </table>
+
+    <script>
+      window.onload = function creapagina(){
+        let table = document.getElementById("outputcarrello");
+
+        let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+
+        let codicecarrello = accountattuale.email + accountattuale.password;
+        let comprati = JSON.parse(localStorage.getItem("comprati" + codicecarrello)) || [];
+        aggiornanavbar();
+
+        for(let i = 0; i < comprati.length; i++){
+          let tr = document.createElement("tr");
+            
+          for(let j = 0; j < comprati[i].length + 1; j ++){
+              
+            let td = document.createElement("td");
+
+            if(j != 3 && j < comprati[i].length){
+                td.textContent = comprati[i][j];
+            }   
+
+            tr.appendChild(td);
+              
+          }
+
+          table.appendChild(tr); 
+        }    
+      }
+
+      function aggiornanavbar(){
+        let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+        let codicecarrello = accountattuale.email + accountattuale.password;
+
+        let carrello = JSON.parse(localStorage.getItem(codicecarrello)) || [];
+
+        let numero = document.getElementById("numerocarrello");
+
+        if(carrello.length > 0){
+          numero.textContent = carrello.length;
+          numero.style.display = "inline-block";
+        }
+        else{
+          numero.style.display = "none";
+        }
+
+        numero.classList.remove("animazione-carrello");
+
+        void numero.offsetWidth;
+
+        numero.classList.add("animazione-carrello");
+      }
+    </script>
+  </body>
+</html>

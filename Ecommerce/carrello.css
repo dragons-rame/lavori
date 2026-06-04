@@ -1,0 +1,250 @@
+/* ===== HEADER ===== */
+header{
+
+    display: flex;
+
+    justify-content: left;
+
+    align-items: center;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 100px;
+ 
+    z-index: 1000;
+
+    background: rgba(255,255,255,0.15);
+
+    backdrop-filter: blur(10px);
+
+    padding: 15px 0;
+}
+
+#divtitolo{
+  width: 25%;
+  padding-left: 27px;
+  padding-right: 9px;
+  gap: 20px;
+  text-align: center;
+}
+
+#titolo{
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* ===== NAVBAR ===== */
+.spostamento{
+    width: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+.spostamento a{
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(5px);
+  transition: 0.2s;
+}
+
+.spostamento a:hover{
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+/* ===== NUMERO CARRELLO ===== */
+
+#numerocarrello{
+
+    background: linear-gradient(135deg, #4a90e2, #5f7ce0);
+
+    color: white;
+
+    border-radius: 8px;
+
+    padding: 3px 10px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    margin-left: 6px;
+
+    min-width: 24px;
+
+    text-align: center;
+
+    display: inline-block;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.animazione-carrello{
+
+    animation: saltello 0.35s ease;
+}
+
+@keyframes saltello{
+
+    0%{
+        transform: translateY(0);
+    }
+
+    30%{
+        transform: translateY(-8px);
+    }
+
+    60%{
+        transform: translateY(2px);
+    }
+
+    100%{
+        transform: translateY(0);
+    }
+}
+
+/* ===== BODY ===== */
+
+body{
+    margin-top: 100px;
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    min-height: 100vh;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* ===== TABELLA ===== */
+
+#outputcarrello{
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+#outputcarrello img{
+    transition: 0.2s;
+}
+
+#outputcarrello img:hover{
+    transform: scale(1.05);
+}
+
+/* ===== RIGHE ===== */
+
+#outputcarrello tr{
+    border-bottom: 1px solid #ddd;
+}
+
+#outputcarrello tr:hover{
+    background: #f8f8f8;
+}
+
+/* ===== CELLE ===== */
+
+#outputcarrello td{
+    padding: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* ===== IMMAGINI ===== */
+
+#outputcarrello img{
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* ===== BOTTONI ===== */
+
+#outputcarrello button,
+#compratutto{
+
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 5px;
+}
+
+/* ===== RIMUOVI ===== */
+
+.cancella{
+    background: #ff5c5c;
+    color: white;
+}
+
+.cancella:hover{
+    background: #e04848;
+}
+
+/* ===== COMPRA ===== */
+
+.compra,
+#compratutto{
+    background: #4a90e2;
+    color: white;
+}
+
+.compra:hover,
+#compratutto:hover{
+    background: #357abd;
+}
+
+/* ===== COMPRA TUTTO ===== */
+
+#compracarrello{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width: 900px){
+
+    #outputcarrello,
+    #outputcarrello tbody,
+    #outputcarrello tr,
+    #outputcarrello td{
+
+        display: block;
+        width: 100%;
+    }
+
+    #outputcarrello tr{
+        margin-bottom: 25px;
+        background: white;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    #outputcarrello td{
+        border-bottom: 1px solid #eee;
+    }
+}
