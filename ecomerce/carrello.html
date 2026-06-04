@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <title>
+      Carrello
+    </title>
+  </head>
+  <link rel="stylesheet" href="https://hermannrienzner.github.io/esercizi_tps/Ecommerce/carrello.css" />
+  <body>
+    <header id="header">
+      <div id="divtitolo">
+        <h1 id="titolo">Capital Of Gaming</h1>
+      </div>
+      <div class="spostamento">
+        <a href="https://hermannrienzner.github.io/esercizi_tps/Ecommerce/home.html">Home</a>
+        <a href="https://hermannrienzner.github.io/esercizi_tps/Ecommerce/registrazione.html">Logout</a>
+        <a href="https://hermannrienzner.github.io/esercizi_tps/Ecommerce/carrello.html">
+          Carrello
+          <span id="numerocarrello"></span>
+        </a>
+        <a href="https://hermannrienzner.github.io/esercizi_tps/Ecommerce/cronologia.html">Cronologia ordini</a>
+      </div>
+    </header>
+    <table id="outputcarrello">
+
+    </table>
+    <div id="compracarrello"></div>
+
+    </div>
+    <script>
+      window.onload = function () {
+        creapagina();
+        aggiornanavbar();
+      }
+
+      function aggiornanavbar(){
+        let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+        let codicecarrello = accountattuale.email + accountattuale.password;
+
+        let carrello = JSON.parse(localStorage.getItem(codicecarrello)) || [];
+
+        let numero = document.getElementById("numerocarrello");
+
+        if(carrello.length > 0){
+          numero.textContent = carrello.length;
+          numero.style.display = "inline-block";
+
+          numero.classList.remove("animazione-carrello");
+
+        void numero.offsetWidth;
+
+        numero.classList.add("animazione-carrello");
+        }
+        else{
+          numero.style.display = "none";
+        }        
+      }
+
+      function creapagina(){
+        let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+        let codicecarrello = accountattuale.email + accountattuale.password;
+
+        let numero = document.getElementById("numerocarrello");
+        let carrello = JSON.parse(localStorage.getItem(codicecarrello));
+        let table = document.getElementById("outputcarrello");
+        table.innerHTML = "";
+        
+        if(carrello != null){
+
+          aggiornanavbar();
+
+          for(let i = 0; i < carrello.length; i++){
+            let tr = document.createElement("tr");
+            let tdimg = document.createElement("td");
+            let immagine = document.createElement("img");
+
+            immagine.src = carrello[i][3];
+            tdimg.appendChild(immagine);
+            tr.appendChild(tdimg);
+            
+            for(let j = 0; j < carrello[i].length + 1; j ++){
+              let td = document.createElement("td");
+              
+              if(j != 3 && j < carrello[i].length){
+                td.textContent = carrello[i][j];
+                tr.appendChild(td);
+              }   
+              if(j == carrello[i].length){
+                let cancella = document.createElement("button");
+                cancella.textContent = "rimuovi dal carrello";
+                cancella.value = i;
+                cancella.className = "cancella";
+                cancella.addEventListener("click", () => interagisciprodotto(cancella.value, ""));
+                td.appendChild(cancella);
+
+                let compra = document.createElement("button");
+                compra.textContent = "acquista";
+                compra.value = i;
+                compra.className = "compra";
+                compra.addEventListener("click", () => interagisciprodotto(compra.value, "compra"));
+                td.appendChild(compra);
+
+                tr.appendChild(td)
+              }
+            }
+
+            table.appendChild(tr); 
+          }     
+          if(carrello.length >= 1){
+            let div = document.getElementById("compracarrello");
+            div.innerHTML = "";
+            let compratutto = document.createElement("button");
+            compratutto.textContent = "acquista carrello";
+            compratutto.id = "compratutto";
+            
+            compratutto.addEventListener("click", function (){
+              for(let k = 0; k < carrello.length; k ++){
+                interagisciprodotto(0, "compra");
+              }
+            })
+
+            div.appendChild(compratutto);
+
+          }
+          else{
+            let div = document.getElementById("compracarrello");
+            div.innerHTML = "";   
+            div.textContent = "il carrello è vuoto";         
+          }
+        }
+        else{
+          let div = document.getElementById("compracarrello");
+          div.textContent = "il carrello è vuoto";
+          aggiornanavbar();
+        }
+      }
+
+      function interagisciprodotto(indice, comando){
+        let accountattuale = JSON.parse(localStorage.getItem("accountattuale"));
+        let codicecarrello = accountattuale.email + accountattuale.password;
+
+        let carrello = JSON.parse(localStorage.getItem(codicecarrello)) || [];
+
+        if(comando == "compra"){
+          let comprati = JSON.parse(localStorage.getItem("comprati" + codicecarrello)) || [];
+          comprati.push(carrello[indice]);
+          localStorage.setItem("comprati" + codicecarrello, JSON.stringify(comprati));
+        }
+
+        carrello.splice(indice, 1);
+
+        localStorage.setItem(codicecarrello, JSON.stringify(carrello));
+
+        creapagina();
+
+      };
+    </script>
+  </body>
+</html>
